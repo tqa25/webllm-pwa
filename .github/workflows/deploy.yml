@@ -1,25 +1,37 @@
 name: Deploy PWA to GitHub Pages
+
 on:
   push:
     branches: [ main ]
+
 permissions:
   contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 1️⃣ Checkout source
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@3df4d06e4b2dc9f5c45e0af2a1c3c7597cf9a3a4  # v3.6.0
+
+      # 2️⃣ Setup Node.js environment
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@5e9e087a72c2b84b21e0d0cc444fbb6b4e60ef77  # v3.8.1
         with:
           node-version: 20
-      - name: Install deps
+
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
         run: npm ci
+
+      # 4️⃣ Build project
       - name: Build project
         run: npm run build
+
+      # 5️⃣ Deploy to GitHub Pages
       - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@3733c17cf4a9f35d8fbc9e6a1a0db9323aa4e556  # v3.9.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
